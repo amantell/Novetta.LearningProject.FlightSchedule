@@ -1,4 +1,9 @@
 export interface Departure {
-    id: number;
-    name: string;
+    Flight: string,
+    FromCity: string,
+    FromTime: string,
+    ToCity: string,
+    ToTime: string,
+    Aircraft: string,
+    Notifications: string
 }

@@ -12,10 +12,10 @@ export class DeparturesComponent implements OnInit {
 
   departures: Departure[];
 
-  constructor(private departuresService: DeparturesService) { }
+  constructor(public departuresService: DeparturesService) { }
 
   getDepartures(): void {
-    this.departuresService.getDepartures().subscribe(departures => this.departures = departures);
+    this.departuresService.openWebSocket();
   }
 
   ngOnInit(): void {

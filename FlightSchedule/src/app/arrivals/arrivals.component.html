@@ -1,8 +1,23 @@
 <h2>
     ARRIVALS
 </h2>
-<ul>
-    <li *ngFor="let arrival of arrivals">
-        <span class="badge">{{arrival.FromCity}}</span>{{arrival.FromCity}}
-    </li>
-</ul>
+<table>
+    <tr>
+        <th>Flight</th>
+        <th>Departing</th>
+        <th>Departure Time</th>
+        <th>Destination</th>
+        <th>Arrival</th>
+        <th>Aircraft</th>
+        <th>Notifications</th>
+    </tr>
+    <tr class="flights" *ngFor="let arrival of this.arrivalsService.arrivals">
+        <td>{{arrival.Flight}}</td>
+        <td>{{arrival.FromCity}}</td>
+        <td>{{arrival.FromTime}}</td>
+        <td>{{arrival.ToCity}}</td>
+        <td>{{arrival.ToTime}}</td>
+        <td>{{arrival.Aircraft}}</td>
+        <td>{{arrival.Notifications}}</td>
+    </tr>
+</table>

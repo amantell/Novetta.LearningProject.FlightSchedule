@@ -12,14 +12,14 @@ export class ArrivalsComponent implements OnInit {
 
   arrivals: Arrival[];
 
-  constructor(private arrivalsService: ArrivalsService) { }
+  constructor(public arrivalsService: ArrivalsService) { 
+  }
 
   getArrivals(): void {
-    this.arrivalsService.getArrivals().subscribe(arrivals => this.arrivals = arrivals);
+    this.arrivalsService.openWebSocket();
   }
 
   ngOnInit(): void {
     this.getArrivals();
   }
-
 }

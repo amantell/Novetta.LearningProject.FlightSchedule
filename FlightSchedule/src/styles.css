@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+SPAN.title {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+TH, TD {
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+TD.departures, TD.arrivals {
+    vertical-align: top;
+}
+.flights:nth-child(even){
+    background-color:#ffffff;
+}
+
+.flights:nth-child(odd){
+    background-color:#999999;
+}

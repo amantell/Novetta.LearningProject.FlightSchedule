@@ -1,8 +1,23 @@
-<h2>
-    DEPARTURES
-</h2>
-<ul>
-    <li *ngFor="let departure of departures">
-        <span class="badge">{{departure.id}}</span>{{departure.name}}
-    </li>
-</ul>
+    <h2>
+        DEPARTURES
+    </h2>
+    <table>
+        <tr>
+            <th>Flight</th>
+            <th>Departing</th>
+            <th>Departure Time</th>
+            <th>Destination</th>
+            <th>Arrival</th>
+            <th>Aircraft</th>
+            <th>Notifications</th>
+        </tr>
+        <tr class="flights" *ngFor="let departure of this.departuresService.departures">
+            <td>{{departure.Flight}}</td>
+            <td>{{departure.FromCity}}</td>
+            <td>{{departure.FromTime}}</td>
+            <td>{{departure.ToCity}}</td>
+            <td>{{departure.ToTime}}</td>
+            <td>{{departure.Aircraft}}</td>
+            <td>{{departure.Notifications}}</td>
+        </tr>
+    </table>

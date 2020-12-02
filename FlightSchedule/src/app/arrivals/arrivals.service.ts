@@ -1,33 +1,44 @@
 import { Injectable } from '@angular/core';
 import { Arrival } from './arrival';
-import { ARRIVALS } from './arrivals';
 import { Observable, of } from 'rxjs';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
 import { ConvertActionBindingResult } from '@angular/compiler/src/compiler_util/expression_converter';
 
-const subject = webSocket("wss://localhost:5001/arrivals");
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArrivalsService {
 
-  constructor() { }
-
+  webSocket: WebSocket;
+  arrival: string;
   arrivals: Arrival[];
 
-  getArrivals(): Observable<Arrival[]> {
+  constructor() { }
 
-    subject.subscribe(
-      msg => this.arrivals = this.parseArrivals(msg), // Called whenever there is a message from the server.
-      err => console.log(err), // Called if at any point WebSocket API signals some kind of error.
-      () => console.log('complete') // Called when connection is closed (for whatever reason).
-    );
-    subject.next('arrivals');
-    return of(this.arrivals);
+  public openWebSocket() {
+    this.webSocket = new WebSocket("wss://localhost:5069/arrivals");
+    this.webSocket.onopen = (event) => {
+      this.sendMessage();
+    }
+    this.webSocket.onmessage = (event) => {
+      let result = JSON.parse(event.data);
+      this.arrivals = this.parseArrivals(result);
+    }
+    this.webSocket.onclose = (event) => {
+      console.log("close:", event)
+    }
   }
 
-  parseArrivals(msg): Arrival[] {
+  private sendMessage() {
+    this.webSocket.send("arrivals");
+  }
+
+  public closeWebsocket() {
+    this.webSocket.close();
+  }
+
+  private parseArrivals(msg): Arrival[] {
     let finalResult = [];
     
     const dataEnum = {
@@ -45,7 +56,7 @@ export class ArrivalsService {
       let data = result[iCounter].split(',');
 
       let arrival = {
-        Flight: null,
+        Flight: null, 
         FromCity: null,
         FromTime: null,
         ToCity: null,
@@ -55,7 +66,9 @@ export class ArrivalsService {
         };
 
       for (let jCounter = 0; jCounter < data.length; jCounter++) {
-        let datum = data[jCounter].split('":"')[1];
+        let datum = data[jCounter].split('":"')[1]
+          .replace(/\\/, '').replace('""', '"')
+          .replace(/\\"/, '').replace('"}', '').replace(/"/, '');
         switch (jCounter) {
             case dataEnum.Aircraft:
               arrival.Aircraft = datum;  
@@ -80,9 +93,6 @@ export class ArrivalsService {
               break;
         }
       }
-
-console.log(arrival);
-
       finalResult.push(arrival);          
     }
 
